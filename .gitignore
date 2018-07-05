@@ -333,3 +333,11 @@ ASALocalRun/
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.crn
+*.txt
+*.gradle
+*.jar
+*.properties
+*.bat
+*.pro
+gradlew
