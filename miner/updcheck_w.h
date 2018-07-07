@@ -48,8 +48,8 @@ BOOL CheckForUpdate(){
 	// Checks if there is an internet connection
 	if (!(InternetGetConnectedState(NULL, NULL))) {
 		// Shows warning message box if disconnected
-		MessageBox(NULL, L"For CrunchNet to work, there must be an active Internet connection.\n\nCrunchNet will now start in offline mode. You will be able to edit the miner configuration, but you will not be able to mine or refresh wallet list.", L"CrunchNet Updater", MB_ICONWARNING);
-		return FALSE;
+		MessageBox(NULL, L"CrunchNet cannot function without an Internet connection.", L"CrunchNet Updater", MB_ICONERROR);
+		return FAIL;
 	}
 
 	// Initializes WinSock

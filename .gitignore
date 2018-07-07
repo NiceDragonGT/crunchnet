@@ -330,15 +330,5 @@ ASALocalRun/
 .mfractor/
 
 # Other files
-*.sln
-*.vcxproj
-*.vcxproj.filters
-*.csproj
-*.crn
 *.txt
-*.gradle
-*.jar
-*.properties
-*.bat
-*.pro
-gradlew
+*.crn

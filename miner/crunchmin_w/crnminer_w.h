@@ -48,21 +48,17 @@ SYSTEMTIME systime; // System time structure
 FILE* fiop; // File IO pointer
 LPBYTE configBuf; // Configuration file buffer
 
-#define MAX_NAME_LENGTH 64 // Maxmium length for name (username, miner name)
+HANDLE timerThread; // Handle to timer thread
 
 // Miner configuration
-LPWSTR accountName, minerName, saveLocation; // Username, miner name and save location
-DWORD64 accountId, walletId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
-DWORD maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
+LPWSTR minerName, saveLocation; // Miner name and save location
+LARGE_INTEGER accountId, walletId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
+WORD maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
 
 // Time macros
 #define HOUR systime.wHour
 #define MIN systime.wMinute
 #define SEC systime.wSecond
-
-// "Cannot edit configuration while miner is active!" error message macro
-#define M_ACTIVE_ERR(hWnd) if(isMinerRunning){ MessageBox(hWnd, L"Cannot edit configuration while miner is active!",\
-szTitle, MB_ICONERROR | MB_APPLMODAL); }else
 
 // Prints time to console
 void WriteTime(int destination) {
@@ -134,7 +130,7 @@ void WriteMessage(LPCWSTR msg, DWORD cch, int destination) {
 	}
 }
 
-// Makes 2 errors (one on the console, one as a message box)
+// Makes 2 errors (one on the console/in log file, one as a message box)
 void WriteError(HWND hWnd, LPCWSTR msg, DWORD cch) {
 	WriteMessage(msg, cch, 2); // Prints error
 	MessageBox(hWnd, msg, szTitle, MB_ICONERROR | MB_APPLMODAL); // Shows error message box
@@ -148,15 +144,80 @@ void ResetMiner(HWND hWnd, HWND minerToggle) {
 	WriteTime(1); // Saves current time to log file
 	fwprintf(fiop, L"\n\n"); // Saves line break character to log file
 	fclose(fiop); // Closes log file stream
+	CloseHandle(timerThread); // Stops timer thread
 	SetWindowText(hWnd, L"CrunchNet Miner (Inactive)"); // Changes text of dashboard window
 	SetWindowText(minerToggle, L"Start miner"); // Changes text of miner toggle button
 }
 
+// Updates timer every second
+DWORD UpdateTimer(HWND window) {
+	WCHAR time[9]; // Time string
+	// Time units
+	BYTE hour = 0;
+	BYTE min = 0;
+	BYTE sec = 0;
+	// Loop until miner has stopped
+	while (isMinerRunning) {
+		Sleep(1000); // Waits 1 second
+		// Appends current time
+		sec++;
+		if (sec == 60) {
+			sec = 0;
+			min++;
+			if (min == 60) {
+				min = 0;
+				hour++;
+			}
+		}
+		// Converts time to string
+		if (hour < 10) {
+			if (min < 10) {
+				if (sec < 10) {
+					swprintf(time, 9, L"0%d:0%d:0%d", hour, min, sec);
+				}
+				else {
+					swprintf(time, 9, L"0%d:0%d:%d", hour, min, sec);
+				}
+			}
+			else {
+				if (sec < 10) {
+					swprintf(time, 9, L"0%d:%d:0%d", hour, min, sec);
+				}
+				else {
+					swprintf(time, 9, L"0%d:%d:%d", hour, min, sec);
+				}
+			}
+		}
+		else {
+			if (min < 10) {
+				if (sec < 10) {
+					swprintf(time, 9, L"%d:0%d:0%d", hour, min, sec);
+				}
+				else {
+					swprintf(time, 9, L"%d:0%d:%d", hour, min, sec);
+				}
+			}
+			else {
+				if (sec < 10) {
+					swprintf(time, 9, L"%d:%d:0%d", hour, min, sec);
+				}
+				else {
+					swprintf(time, 9, L"%d:%d:%d", hour, min, sec);
+				}
+			}
+		}
+		SetWindowText(window, time); // Changes text of timer window
+	}
+	SetWindowText(window, L"00:00:00"); // Resets timer
+	return 0;
+}
+
 // Starts miner
-void StartMiner(HWND hWnd, HWND minerToggle) {
+void StartMiner(HWND hWnd, HWND minerToggle, HWND timer) {
 	isMinerRunning = TRUE; // Sets miner status to active
 	SetWindowText(hWnd, L"CrunchNet Miner (Active)"); // Changes text of dashboard window
 	SetWindowText(minerToggle, L"Stop miner"); // Changes text of miner toggle button
+	timerThread = CreateThread(NULL, 0, UpdateTimer, timer, NULL, NULL); // Starts timer
 
 	// Miner initialization
 	GetSystemTime(&systime); // Gets current time
