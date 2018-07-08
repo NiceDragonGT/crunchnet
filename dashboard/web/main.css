@@ -1,0 +1,74 @@
+﻿/*
+main.css: CrunchNet Dashboard CSS file
+Copyright (c) 2018 Kade Burnside
+*/
+
+/* Imports fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Nunito'); /* Headings */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans'); /* Rest of website */
+
+/* Required for full screen image to work */
+body, html {
+    height: 100%;
+    margin: 0px;
+}
+
+/* Background styles */
+body {
+    text-align: center;
+    background-color: rgb(32, 0, 64);
+}
+
+/* Full screen image */
+#header-image {
+    background-image: url(img/header.png);
+    position: relative;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Image caption positioning */
+#header-caption {
+    position: absolute;
+    left: 0%;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+}
+
+#account-header-caption {
+    position: absolute;
+    left: 0%;
+    top: 15%;
+    width: 100%;
+    text-align: center;
+}
+
+/* Image caption styles */
+#crunchnet-text-header, #crunchnet-text-main { color: rgb(0, 255, 255); }
+#crunchnet-text-header { margin: 0px; font-size: 100px; }
+#crunchnet-text-main { margin: 0px; font-size: 30px; }
+
+/* Header & footer styles */
+header, footer { background-color: rgb(64, 0, 128); padding: 15px; }
+
+/* Common text styles */
+
+/* Headings */
+h1, h2, h3 { font-family: Nunito, sans-serif; color: white; }
+h1 { font-size: 50px; }
+h2 { font-size: 35px; }
+h3 { font-size: 25px; }
+
+/* Other text */
+p, a { font-family: Open Sans, sans-serif; color: white; font-size: 20px; }
+
+/* Header link styles */
+.headlink{ text-decoration: none; font-size: 30px; padding: 20px; }
+
+/* Form styles (sign-in/sign-up page) */
+.form { background-color: rgb(64, 0, 64); width: 500px; padding: 5px; margin: auto; }
+.login-field { width: 470px; height: 30px; font-size: 20px; }
+.login-field-mini { width: 150px; height: 30px; font-size: 20px; }

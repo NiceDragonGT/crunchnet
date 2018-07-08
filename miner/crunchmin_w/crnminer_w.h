@@ -23,8 +23,9 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 #ifndef CRNMINER_W_H
 #define CRNMINER_W_H
 
-// Standard library include
+// Standard library includes
 #include <stdio.h>
+#include <stdlib.h>
 
 // Internal CrunchNet include
 #include <miner/updcheck_w.h>
@@ -46,14 +47,14 @@ SYSTEM_INFO sysinfo; // System info structure
 SYSTEMTIME systime; // System time structure
 
 FILE* fiop; // File IO pointer
-LPBYTE configBuf; // Configuration file buffer
 
 HANDLE timerThread; // Handle to timer thread
 
 // Miner configuration
-LPWSTR minerName, saveLocation; // Miner name and save location
+LPWSTR minerName; // Miner name
+LPWSTR saveLocation; // Save location
 LARGE_INTEGER accountId, walletId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
-WORD maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
+BYTE maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
 
 // Time macros
 #define HOUR systime.wHour

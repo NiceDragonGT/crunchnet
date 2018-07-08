@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="98a784f3-8625-439f-8684-d24db10992cc" Publisher="CN=Kade Burnside" Version="1.0.0.0" />
+  <Identity Name="98a784f3-8625-439f-8684-d24db10992cc" Publisher="CN=Kade Burnside" Version="0.1.0.0" />
   <mp:PhoneIdentity PhoneProductId="98a784f3-8625-439f-8684-d24db10992cc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>windows-uwp</DisplayName>
-    <PublisherDisplayName>Kade Burnside</PublisherDisplayName>
+    <PublisherDisplayName>Cadella Burnside</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -19,6 +19,9 @@
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape" />
+        </uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>
