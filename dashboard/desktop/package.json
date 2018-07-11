@@ -1,0 +1,14 @@
+{
+  "name": "desktop",
+  "version": "0.1.0",
+  "description": "CrunchNet Dashboard for Cross-Platform Desktop",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Cadella Burnside",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "electron": "^2.0.4"
+  }
+}

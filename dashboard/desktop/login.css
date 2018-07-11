@@ -1,0 +1,90 @@
+﻿/*
+login.css: CrunchNet login window style sheet
+Copyright (c) 2018 Kade Burnside
+*/
+
+/*
+This file is part of CrunchNet.
+
+CrunchNet is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+CrunchNet is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Imports fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+/* Body */
+body {
+    text-align: center;
+}
+
+/* Horizontal lines */
+hr {
+    border: none;
+    height: 5px;
+    background-color: white;
+}
+
+/* Header styles */
+h1 {
+    font-size: 35px;
+    font-family: Nunito, sans-serif;
+}
+
+/* Paragraph styles */
+p, a {
+    font-size: 20px;
+    font-family: Open Sans, sans-serif;
+}
+
+/* Copyright text styles */
+.copyright {
+    font-size: 15px;
+}
+
+/* Link styles */
+a {
+    color: black;
+}
+
+/* Full-width input field */
+input {
+    width: 350px;
+    height: 30px;
+    font-size: 20px;
+}
+
+/* Third-width input field */
+.small-input {
+    width: 110px;
+}
+
+/* Third-width drop-down list */
+select {
+    width: 115px;
+    height: 30px;
+    font-size: 20px;
+}
+
+/* Half-width drop-down list */
+.large-select {
+    width: 175px;
+}
+
+/* Button */
+button {
+    width: 150px;
+    height: 30px;
+    font-size: 20px;
+}
