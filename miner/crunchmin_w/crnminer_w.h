@@ -51,9 +51,10 @@ FILE* fiop; // File IO pointer
 HANDLE timerThread; // Handle to timer thread
 
 // Miner configuration
+LPWSTR accountName; // Username
 LPWSTR minerName; // Miner name
 LPWSTR saveLocation; // Save location
-LARGE_INTEGER accountId, walletId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
+LARGE_INTEGER accountId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
 BYTE maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
 
 // Time macros

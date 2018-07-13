@@ -155,7 +155,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="account-ui.h" />
     <ClInclude Include="crnminer_w.h" />
     <ClInclude Include="crunchmin_w.h" />
     <ClInclude Include="Resource.h" />

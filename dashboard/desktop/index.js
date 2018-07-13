@@ -25,17 +25,17 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-var mainWindow; // Window
-
 // Listen for app to be ready
 electron.app.on('ready', function () {
-    mainWindow = new electron.BrowserWindow({
-        width: 450,
-        height: 500,
+    // Creates window
+    let mainWindow = new electron.BrowserWindow({
+        width: 1280,
+        height: 720,
+        minWidth: 1280,
+        minHeight: 720,
         resizable: true,
-        backgroundColor: '#ffb6c1',
         icon: path.join(__dirname, 'favicon.ico')
-    }); // Creates window
+    });
     mainWindow.setMenu(null); // Removes menu from window
     // Loads HTML into window
     mainWindow.loadURL(url.format({

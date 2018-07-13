@@ -20,11 +20,6 @@ You should have received a copy of the GNU General Public License
 along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Imports modules
-const electron = require('electron');
-const BrowserWindow = electron.remote.BrowserWindow;
-const index = require('index.js');
-
 // Base sign in function (To be replaced with CRNAPI function)
 function BaseSignIn(username, password) {
     window.location = 'main.html';

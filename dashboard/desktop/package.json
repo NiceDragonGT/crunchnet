@@ -1,5 +1,5 @@
 {
-  "name": "desktop",
+  "name": "CrunchNet Dashboard",
   "version": "0.1.0",
   "description": "CrunchNet Dashboard for Cross-Platform Desktop",
   "main": "index.js",

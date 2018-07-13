@@ -24,9 +24,6 @@
     <ClInclude Include="crnminer_w.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="account-ui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="crunchmin_w.rc">

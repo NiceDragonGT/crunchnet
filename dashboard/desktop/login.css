@@ -27,6 +27,7 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 /* Body */
 body {
     text-align: center;
+    background-color: lightpink;
 }
 
 /* Horizontal lines */

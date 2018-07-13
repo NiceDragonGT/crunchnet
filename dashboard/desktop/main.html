@@ -1,5 +1,5 @@
 ﻿<!--
-main.html: CrunchNetDashboard main page
+main.html: CrunchNet Dashboard main page
 Copyright (c) 2018 Kade Burnside
 -->
 <!--
@@ -26,18 +26,51 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
     <link href="main.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <h1 style="color: white; font-size: 45px;">CrunchNet Dashboard</h1>
-        <div style="background-color: hotpink; padding: 10px;">
-            <a class="headlink" href="main.html">Home</a>
-            <a class="headlink" href="AccountSelect.html">Sign out</a>
-        </div>
-    </header>
+    <script src="header.js"></script>
     <main style="background-color: lightpink;">
-
+        <h1 style="margin: 0px;">Welcome back, [fn]!</h1>
+        <h2 style="margin: 0px;">Current account: [username]</h2>
+        <table align="center">
+            <tbody>
+                <tr>
+                    <td style="width: 360px; background-color: hotpink; padding: 10px;">
+                        <h2>Basic Information</h2>
+                        <p id="name-display">Full name: [fn] [mn] [sn]</p>
+                        <p id="username-display">Username: [username]</p>
+                        <p id="email-display">Email address: [email]</p>
+                        <p id="dob-display">Date of birth: [bd] [bm] [by]</p>
+                        <p id="gender-display">Gender: [gender]</p>
+                        <p id="pronoun-display">Preferred pronoun: [pronoun]</p>
+                        <script>
+                            function EditInfo() {
+                                window.location = 'settings.html';
+                            }
+                        </script>
+                        <button onclick="EditInfo()">Edit info</button>
+                    </td>
+                    <td style="width: 360px; background-color: hotpink; padding: 10px;">
+                        <h2>Wallets</h2>
+                        <select id="wallet-select" size="2" style="width: 250px; height: 100px;">
+                            <option>Main Wallet</option>
+                        </select>
+                        <h3>Multi-wallet support not available yet</h3>
+                        <p id="wallet-balance">Wallet balance: [balance] CYX</p>
+                        <button>Create wallet</button>
+                        <button>Delete wallet</button>
+                    </td>
+                    <td style="width: 360px; background-color: hotpink; padding: 10px;">
+                        <h2>Miners</h2>
+                        <select id="miner-select" size="2" style="width: 250px; height: 100px;">
+                            <option>This is a miner</option>
+                        </select>
+                        <h3>Miner information</h3>
+                        <p id="miner-duration">Session duration: [time]</p>
+                        <p id="miner-earnings">Session earnings: [earnings]</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </main>
-    <footer>
-        <p style="font-size: 15px; color: white;">Version 0.1<br />Copyright (c) 2018 Kade Burnside</p>
-    </footer>
+    <script src="footer.js"></script>
 </body>
 </html>
