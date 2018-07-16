@@ -334,3 +334,5 @@ ASALocalRun/
 *.crn
 dashboard/mobile/build.json
 dashboard/mobile/res/native/android/ant.properties
+dashboard/mobile/simulation
+dashboard/mobile/plugins
