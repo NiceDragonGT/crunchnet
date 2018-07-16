@@ -44,3 +44,8 @@ electron.app.on('ready', function () {
         slashes: true
     }));
 });
+
+// Listen for app to close
+electron.app.on('window-all-closed', function () {
+    app.quit(); // Closes app
+});

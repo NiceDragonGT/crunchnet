@@ -1,5 +1,5 @@
 ﻿<!--
-index.html: CrunchNet Dashboard main page
+miners.html: CrunchNet Dashboard miners page
 Copyright (c) 2018 Kade Burnside
 -->
 <!--
@@ -31,39 +31,28 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
     <div>
         <script type="text/javascript" src="header.js"></script>
         <main style="background-color: lightpink;">
-            <h2 style="padding-top: 3px; margin-top: 0px;">Basic Information</h2>
+            <h2>Miners manager</h2>
             <article>
-                <p id="name">Name: [fn] [mn] [sn]</p>
-                <p id="username">Username: [username]</p>
-                <script>
-                    function Basic_ViewAll() {
-                        window.location = 'settings.html';
-                    }
-                </script>
-                <button onclick="Basic_ViewAll()">View all</button>
-            </article>
-            <h2>Wallets</h2>
-            <article>
-                <select id="wallet-select" style="width: 250px;">
-                    <option>Main Wallet</option>
-                </select>
-                <h3>Multi-wallet support not available yet</h3>
-                <p id="balance">Wallet balance: [balance] CYX</p>
-            </article>
-            <h2>Miners</h2>
-            <article>
+                <h3>Select miner</h3>
                 <select id="miner-select" style="width: 250px;">
                     <option>This is a miner</option>
                 </select>
-                <h3>Miner information</h3>
-                <p id="duration">Session duration: [time]</p>
+            </article>
+            <h2>Session information</h2>
+            <article>
+                <p id="duration">Session duration: [duration]</p>
+                <p id="duration-start">(Started at [duration-start])</p>
                 <p id="earnings">Session earnings: [earnings]</p>
+                <p id="est-cryptx-h">CryptX/hour: [est-cryptx-h]</p>
+                <p id="est-cryptx-d">CryptX/day: [est-cryptx-d]</p>
+            </article>
+            <h2>Miner load</h2>
+            <article>
+                <p id="processes">Processes running: [processes]</p>
+                <p id="cpu-load">CPU usage: [cpu-load]</p>
             </article>
         </main>
         <script type="text/javascript" src="footer.js"></script>
     </div>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
 </body>
 </html>

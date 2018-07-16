@@ -1,5 +1,5 @@
-/*
-index.css: CrunchNet Dashboard style sheet
+﻿/*
+login.css: CrunchNet login window style sheet
 Copyright (c) 2018 Kade Burnside
 */
 
@@ -26,69 +26,67 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 /* Body */
 body {
     text-align: center;
-    background-color: deeppink;
-    margin: 0;
+    background-color: lightpink;
+}
+
+/* Horizontal lines */
+hr {
+    border: none;
+    height: 5px;
+    background-color: white;
 }
 
 /* Header styles */
-h1, h2, h3 {
+h1 {
+    font-size: 35px;
     font-family: Nunito, sans-serif;
-}
-
-h2, h3 {
-    margin: 0;
 }
 
 /* Paragraph styles */
 p, a {
+    font-size: 20px;
     font-family: Open Sans, sans-serif;
+    margin: 5px;
+}
+
+/* Copyright text styles */
+.copyright {
+    font-size: 15px;
+    margin: 10px;
+}
+
+/* Link styles */
+a {
+    color: black;
+}
+
+/* Full-width input field */
+input {
+    width: 320px;
+    height: 30px;
     font-size: 20px;
-    margin: 1px;
 }
 
-/* Header link styles */
-.headlink {
+/* Third-width input field */
+.small-input {
+    width: 100px;
+}
+
+/* Third-width drop-down list */
+select {
+    width: 105px;
+    height: 30px;
     font-size: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    color: white;
-    text-decoration: none;
 }
 
-/* Main page styles */
-main {
-    margin: 0 0 5px 0;
+/* Half-width drop-down list */
+.large-select {
+    width: 160px;
 }
 
-/* Section styles */
-article {
-    background-color: hotpink;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-/* Default button style */
+/* Button */
 button {
     width: 150px;
-    height: 30px;
-    font-size: 20px;
-}
-
-/* Default drop-down list style */
-select {
-    width: 150px;
-    height: 30px;
-    font-size: 20px;
-}
-
-/* Default list item style */
-li {
-    font-family: Open Sans, sans-serif;
-}
-
-/* Default text box style */
-input {
-    width: 165px;
     height: 30px;
     font-size: 20px;
 }

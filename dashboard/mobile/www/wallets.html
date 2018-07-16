@@ -1,5 +1,5 @@
 ﻿<!--
-index.html: CrunchNet Dashboard main page
+wallets.html: CrunchNet Dashboard wallets page
 Copyright (c) 2018 Kade Burnside
 -->
 <!--
@@ -31,39 +31,38 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
     <div>
         <script type="text/javascript" src="header.js"></script>
         <main style="background-color: lightpink;">
-            <h2 style="padding-top: 3px; margin-top: 0px;">Basic Information</h2>
+            <h2>Wallets manager</h2>
             <article>
-                <p id="name">Name: [fn] [mn] [sn]</p>
-                <p id="username">Username: [username]</p>
-                <script>
-                    function Basic_ViewAll() {
-                        window.location = 'settings.html';
-                    }
-                </script>
-                <button onclick="Basic_ViewAll()">View all</button>
-            </article>
-            <h2>Wallets</h2>
-            <article>
+                <h3>Select wallet</h3>
                 <select id="wallet-select" style="width: 250px;">
                     <option>Main Wallet</option>
                 </select>
                 <h3>Multi-wallet support not available yet</h3>
-                <p id="balance">Wallet balance: [balance] CYX</p>
             </article>
-            <h2>Miners</h2>
+            <h2>Wallet info</h2>
+            <article style="padding-bottom: 0;">
+                <p id="balance">Current balance: [balance]</p>
+                <p>Recent transactions:</p>
+                <ul id="transaction-list" style="background-color: white; height: 100px; overflow: auto; margin: 0; text-align: left;">
+                    <li>[17/7/2018 15:18:20]<br />6b394ac90ff419bc, 99.75 CYX</li>
+                    <li>[17/7/2018 15:18:20]<br />6b394ac90ff419bc, 99.75 CYX</li>
+                    <li>[17/7/2018 15:18:20]<br />6b394ac90ff419bc, 99.75 CYX</li>
+                    <li>[17/7/2018 15:18:20]<br />6b394ac90ff419bc, 99.75 CYX</li>
+                    <li>[17/7/2018 15:18:20]<br />6b394ac90ff419bc, 99.75 CYX</li>
+                    <li>[17/7/2018 15:18:20]<br />6b394ac90ff419bc, 99.75 CYX</li>
+                    <li>[17/7/2018 15:18:20]<br />6b394ac90ff419bc, 99.75 CYX</li>
+                </ul>
+            </article>
+            <h2>Send money</h2>
             <article>
-                <select id="miner-select" style="width: 250px;">
-                    <option>This is a miner</option>
-                </select>
-                <h3>Miner information</h3>
-                <p id="duration">Session duration: [time]</p>
-                <p id="earnings">Session earnings: [earnings]</p>
+                <input id="wallet-input" placeholder="Wallet" />
+                <input id="amount-input" placeholder="Amount" type="number" />
+                <p style="padding: 10px;">
+                    <button>Send</button>
+                </p>
             </article>
         </main>
         <script type="text/javascript" src="footer.js"></script>
     </div>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
 </body>
 </html>

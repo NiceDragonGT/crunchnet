@@ -1,16 +1,16 @@
 # CrunchNet Blockchain
 A small but powerful blockchain written in C.
-## Current releases
+## Current releases (Universal release: *none*)
 ### Miner
 #### Windows (Vista and later)
 ###### Latest stable version: *none*
 ###### Latest development version: 0.1
 #### Mac OS & Linux currently not supported
 ### Dashboard
-#### Windows (Vista and later)
+#### Desktop (using Electron 1.1.2, official builds for Windows 7 and later)
 ###### Latest stable version: *none*
 ###### Latest development version: 0.1
-#### Android (4.0.3 Ice Cream Sandwich and later)
+#### Mobile (using Cordova 6.3.1, official builds for Android 4.0.3 and later)
 ###### Latest stable version: *none*
 ###### Latest development version: 0.1
 ## Development environment
