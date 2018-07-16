@@ -26,6 +26,7 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 // Standard library includes
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 // Internal CrunchNet include
 #include <miner/updcheck_w.h>
@@ -51,11 +52,11 @@ FILE* fiop; // File IO pointer
 HANDLE timerThread; // Handle to timer thread
 
 // Miner configuration
+LARGE_INTEGER accountId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
+BYTE maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
 LPWSTR accountName; // Username
 LPWSTR minerName; // Miner name
 LPWSTR saveLocation; // Save location
-LARGE_INTEGER accountId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
-BYTE maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
 
 // Time macros
 #define HOUR systime.wHour

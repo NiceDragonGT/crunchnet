@@ -332,3 +332,5 @@ ASALocalRun/
 # Other files
 *.txt
 *.crn
+dashboard/mobile/build.json
+dashboard/mobile/res/native/android/ant.properties

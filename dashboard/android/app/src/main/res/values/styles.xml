@@ -1,9 +1,0 @@
-<resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:background">@color/LightPink</item>
-        <item name="android:headerBackground">@color/DeepPink</item>
-    </style>
-
-</resources>

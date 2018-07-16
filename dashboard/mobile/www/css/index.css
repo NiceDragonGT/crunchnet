@@ -1,0 +1,74 @@
+/*
+index.css: CrunchNet Dashboard style sheet
+Copyright (c) 2018 Kade Burnside
+*/
+
+/*
+This file is part of CrunchNet.
+
+CrunchNet is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+CrunchNet is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Imports fonts from Google Fonts */
+@import url(fonts.css);
+
+/* Body */
+body {
+    text-align: center;
+    background-color: deeppink;
+    margin: 0;
+}
+
+/* Header styles */
+h1, h2, h3 {
+    font-family: Nunito, sans-serif;
+}
+
+h2, h3 {
+    margin: 0;
+}
+
+/* Paragraph styles */
+p, a {
+    font-family: Open Sans, sans-serif;
+    font-size: 20px;
+    margin: 1px;
+}
+
+/* Header link styles */
+.headlink {
+    font-size: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+/* Main page styles */
+main {
+    margin: 0 0 5px 0;
+}
+
+/* Section styles */
+article {
+    background-color: hotpink;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* Default button style */
+button {
+    width: 100px;
+    height: 20px;
+}

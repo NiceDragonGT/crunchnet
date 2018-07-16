@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>CrunchNet Dashboard</title>
+    </head>
+    <body>
+        <div>
+            <header>
+                <h1 style="color: white; font-size: 30px; margin: 10px;">CrunchNet Dashboard</h1>
+                <script>
+                    function ViewMenu() {
+
+                    }
+                </script>
+                <article>
+                     <a style="color: white;" onclick="ViewMenu()"><u>View menu</u></a>
+                </article>
+            </header>
+            <main style="background-color: lightpink;">
+                <h2 style="padding-top: 3px; margin-top: 0px;">Basic Information</h2>
+                <article>
+                    <p>Name: [fn] [mn] [sn]</p>
+                    <p>Username: [username]</p>
+                    <button>View all</button>
+                </article>
+                <h2>Wallets</h2>
+                <article>
+                    <select id="wallet-select" style="width: 150px; height: 20px;">
+                        <option>Main Wallet</option>
+                    </select>
+                    <h3>Multi-wallet support not available yet</h3>
+                    <p>Wallet balance: [balance] CYX</p>
+                </article>
+                <h2>Miners</h2>
+                <article>
+                    <select id="miner-select" style="width: 150px; height: 20px;">
+                        <option>This is a miner</option>
+                    </select>
+                    <h3>Miner information</h3>
+                    <p>Session duration: [time]</p>
+                    <p>Session earnings: [earnings]</p>
+                </article>
+            </main>
+            <footer>
+                <p style="color: white;">Version 0.1<br />Copyright (c) 2018 Kade Burnside</p>
+            </footer>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+        <script type="text/javascript" src="scripts/index.js"></script>
+    </body>
+</html>
