@@ -34,13 +34,8 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
         <main style="background-color: lightpink;">
             <h2>Account Settings</h2>
             <hr style="margin: 0;" />
-            <h2>Basic Information</h2>
+            <h2 id="bi">Basic Information</h2>
             <article>
-                <p>
-                    <input id="fn" class="small-input" placeholder="First name" />
-                    <input id="mn" class="small-input" placeholder="Middle name" />
-                    <input id="sn" class="small-input" placeholder="Last name" />
-                </p>
                 <p>
                     <input id="username" placeholder="Username" />
                 </p>
@@ -221,28 +216,6 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
                     </select>
                 </p>
                 <p>
-                    <select id="gender" class="large-select">
-                        <option value="0">Gender</option>
-                        <option value="1">Female</option>
-                        <option value="2">Male</option>
-                        <option value="3">Trans Female</option>
-                        <option value="4">Trans Male</option>
-                        <option value="5">Genderqueer</option>
-                        <option value="6">Non-binary</option>
-                        <option value="7">Androgynous</option>
-                        <option value="8">Other</option>
-                    </select>
-                    <select id="pronoun" class="large-select">
-                        <option value="0">Preferred pronoun</option>
-                        <option value="1">Female (she, her, hers)</option>
-                        <option value="2">Male (he, him, his)</option>
-                        <option value="3">Gender neutral (they, them, theirs)</option>
-                    </select>
-                </p>
-                <p>
-                    <input id="password" placeholder="Password" type="password" />
-                </p>
-                <p>
                     <button>Save changes</button>
                 </p>
             </article>
@@ -287,11 +260,14 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
                     <button>Save changes</button>
                 </p>
             </article>
-            <h2>Parental control settings</h2>
+            <h2>Developer mode</h2>
             <article>
-                <p>Not implemented yet</p>
                 <p>
-                    <button>Save changes</button>
+                    Enable developer mode:
+                    <select id="devmode-enable">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
                 </p>
             </article>
             <hr />

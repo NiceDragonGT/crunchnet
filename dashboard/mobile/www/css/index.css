@@ -48,11 +48,7 @@ p, a {
 
 /* Header link styles */
 .headlink {
-    font-size: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    color: white;
-    text-decoration: none;
+    margin: 5px;
 }
 
 /* Main page styles */
