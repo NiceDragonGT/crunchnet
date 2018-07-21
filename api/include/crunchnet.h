@@ -6,7 +6,6 @@ Copyright (c) 2018 Kade Burnside
 #ifndef CRUNCHNET_H
 #define CRUNCHNET_H
 
-#define NCRNFUNC ucnum64
 #define EXP __declspec(dllexport)
 #define CRNFUNC EXP ucnum64
 
@@ -24,21 +23,43 @@ typedef unsigned long long ucnum64;
 typedef cnum8* crnstr;
 typedef crnstr* crnstrarr;
 
+typedef ucnum8 cbool;
 typedef void nullret;
 typedef void* handle;
 
-// Structure pointer types
+typedef ucnum64 NCRNFUNC;
+
+/** Structure defenitions **/
+
+// Date structure
+typedef struct _crndate {
+	ucnum8 day, month;
+	ucnum32 year;
+}crndate;
+
+// Account structure
+typedef struct _crnaccount {
+	ucnum64 id;
+	crnstr username, email;
+	crndate dob, joindate;
+}crnaccount, *pcrnacc;
+
+/** Structure pointer types **/
 typedef handle CTK;
-typedef crnstrarr FLOC;
+typedef const crnstr* const FLOC;
 
 /* Functions */
 
 // Initialization functions
-CTK CrunchInit(CTK, FLOC);
-NCRNFUNC CrunchEnd(CTK, FLOC);
+nullret CrunchInit(CTK token, FLOC fPath);
+NCRNFUNC CrunchEnd(CTK token, FLOC fPath);
 
 // App console functions
-nullret AppLog(CTK, crnstr, ucnum16);
-nullret AppErr(CTK, crnstr, ucnum16);
+nullret AppLog(CTK token, crnstr msg, ucnum16 len);
+nullret AppErr(CTK token, crnstr msg, ucnum16 len);
+
+// Account functions
+cbool GetAccountById(CTK token, ucnum64 id, pcrnacc crnacc);
+cbool GetAccountByUsername(CTK token, crnstr username, pcrnacc crnacc);
 
 #endif

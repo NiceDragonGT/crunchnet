@@ -1,5 +1,5 @@
 /*
-crnapi_w.c: CRNAPI implementation library main file (Windows)
+crnapi_w.c: CRNAPI implementation library source file (Windows)
 Copyright (c) 2018 Kade Burnside
 */
 
@@ -27,9 +27,6 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 #include <Windows.h>
 #include <api/include/crunchnet.h>
 
-// Function pointer type macro
-#define FPTYPE(type, name, params) typedef type##(*##name)##params
-
 // CrunchNet token type
 typedef struct _CTK_T {
 	ucnum16 processId;
@@ -40,22 +37,25 @@ typedef struct _CTK_T {
 // Casts input token to struct pointer
 #define TK_CONVERT TCTK tToken = (TCTK)token
 
+// Implementation function call defenition
+#define IMPCALL(name, impname, type, params)\
+typedef type##(*##name)##params;\
+name func = (name)GetProcAddress(tToken->winDll, impname)
+
 /* Functions */
 
 // CrunchInit
-CTK CrunchInit(CTK token, FLOC fPath) {
+nullret CrunchInit(CTK token, FLOC fPath) {
 	TK_CONVERT;
 	tToken->winDll = LoadLibrary((LPCSTR)fPath[1]); // Loads crnapi_b.dll (or crnapidev_b.dll if run in emulator)
-	FPTYPE(CTK, CRUNCHINIT, (CTK, FLOC)); // Creates function pointer type
-	CRUNCHINIT func = (CRUNCHINIT)GetProcAddress(tToken->winDll, "impCrunchInit"); // Gets address of function
-	return (CTK)(func)(token, fPath); // Calls implementation function
+	IMPCALL(CRUNCHINIT, "impCrunchInit", nullret, (CTK, FLOC)); // Gets implementation function
+	(func)(token, fPath); // Calls implementation function
 }
 
 // CrunchEnd
 NCRNFUNC CrunchEnd(CTK token, FLOC fPath) {
 	TK_CONVERT;
-	FPTYPE(NCRNFUNC, CRUNCHEND, (CTK, FLOC)); // Creates function pointer type
-	CRUNCHEND func = (CRUNCHEND)GetProcAddress(tToken->winDll, "impCrunchEnd"); // Gets address of function
+	IMPCALL(CRUNCHEND, "impCrunchEnd", NCRNFUNC, (CTK, FLOC)); // Gets implementation function
 	NCRNFUNC rVal = (func)(token, fPath); // Calls implementation function
 	FreeLibrary(tToken->winDll); // Unloads library
 	return rVal; // Returns value returned by implementation function
@@ -64,15 +64,27 @@ NCRNFUNC CrunchEnd(CTK token, FLOC fPath) {
 // AppLog
 nullret AppLog(CTK token, crnstr msg, ucnum16 len) {
 	TK_CONVERT;
-	FPTYPE(nullret, APPLOG, (CTK, crnstr, ucnum16)); // Creates function pointer type
-	APPLOG func = (APPLOG)GetProcAddress(tToken->winDll, "impAppLog"); // Gets address of function
+	IMPCALL(APPLOG, "impAppLog", nullret, (CTK, crnstr, ucnum16)); // Gets implementation function
 	(func)(token, msg, len); // Calls implementation function
 }
 
 // AppErr
 nullret AppErr(CTK token, crnstr msg, ucnum16 len) {
 	TK_CONVERT;
-	FPTYPE(nullret, APPERR, (CTK, crnstr, ucnum16)); // Creates function pointer type
-	APPERR func = (APPERR)GetProcAddress(tToken->winDll, "impAppErr"); // Gets address of function
+	IMPCALL(APPERR, "impAppErr", nullret, (CTK, crnstr, ucnum16)); // Gets implementation function
 	(func)(token, msg, len); // Calls implementation function
+}
+
+// GetAccountById
+cbool GetAccountById(CTK token, ucnum64 id, pcrnacc crnacc) {
+	TK_CONVERT;
+	IMPCALL(GETACCOUNTBYID, "impGetAccountById", cbool, (CTK, ucnum64, pcrnacc)); // Gets implementation function
+	return (func)(token, id, crnacc); // Calls implementation function
+}
+
+// GetAccountByUsername
+cbool GetAccountByUsername(CTK token, crnstr username, pcrnacc crnacc) {
+	TK_CONVERT;
+	IMPCALL(GETACCOUNTBYUSERNAME, "impGetAccountByUsername", cbool, (CTK, crnstr, pcrnacc)); // Gets implementation function
+	return (func)(token, username, crnacc); // Calls implementation function
 }
