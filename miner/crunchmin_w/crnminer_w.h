@@ -63,54 +63,59 @@ LPWSTR saveLocation; // Save location
 #define MIN systime.wMinute
 #define SEC systime.wSecond
 
+// Gets data from configuration file
+void GetConfig() {
+	LPBYTE buffer; // File buffer
+
+	// Opens file for reading
+	if (_wfopen_s(&fiop, L"config.crn", L"r")) {
+		// If unable to open file, show error message box
+		MessageBox(NULL, L"Unable to open configuration file", L"CrunchNet Miner", MB_ICONERROR);
+	}
+	else {
+		// Gets length of file
+		fseek(fiop, 0, SEEK_END);
+		int length = ftell(fiop);
+		fseek(fiop, 0, SEEK_SET);
+		// Checks if length is 0
+		if (length) {
+			buffer = malloc(length); // Allocates memory
+			// Parses configuration file
+			free(buffer); // Frees allocated memory
+			fclose(fiop); // Closes file
+		}
+		else {
+			fclose(fiop); // Closes file
+			_wfopen_s(&fiop, L"config.crn", L"w"); // Opens file for writing
+			// Creates blank configuration
+			BYTE blankByte = 0; // Blank byte
+			for (BYTE i = 0; i < 0; i++)
+				fwrite(&blankByte, 1, 1, fiop); // Writes empty byte to file
+		}
+	}
+}
+
+// Saves data to configuration file
+void SaveConfig(HWND username, HWND minerName, HWND allocTxt, HWND allocCB, HWND processTB) {
+
+}
+
 // Prints time to console
 void WriteTime(int destination) {
 	WCHAR time[11]; // Time string
 	GetSystemTime(&systime); // Gets system time
 	// Converts time to string
-	if (HOUR < 10) {
-		if (MIN < 10) {
-			if (SEC < 10) {
-				swprintf(time, 11, L"[0%d:0%d:0%d]", HOUR, MIN, SEC);
-			}
-			else {
-				swprintf(time, 11, L"[0%d:0%d:%d]", HOUR, MIN, SEC);
-			}
-		}
-		else {
-			if (SEC < 10) {
-				swprintf(time, 11, L"[0%d:%d:0%d]", HOUR, MIN, SEC);
-			}
-			else {
-				swprintf(time, 11, L"[0%d:%d:%d]", HOUR, MIN, SEC);
-			}
-		}
-	}
-	else {
-		if (MIN < 10) {
-			if (SEC < 10) {
-				swprintf(time, 11, L"[%d:0%d:0%d]", HOUR, MIN, SEC);
-			}
-			else {
-				swprintf(time, 11, L"[%d:0%d:%d]", HOUR, MIN, SEC);
-			}
-		}
-		else {
-			if (SEC < 10) {
-				swprintf(time, 11, L"[%d:%d:0%d]", HOUR, MIN, SEC);
-			}
-			else {
-				swprintf(time, 11, L"[%d:%d:%d]", HOUR, MIN, SEC);
-			}
-		}
-	}
+	if (HOUR < 10) if (MIN < 10) if (SEC < 10) swprintf(time, 11, L"[0%d:0%d:0%d]", HOUR, MIN, SEC);
+	else swprintf(time, 11, L"[0%d:0%d:%d]", HOUR, MIN, SEC);
+	else if (SEC < 10) swprintf(time, 11, L"[0%d:%d:0%d]", HOUR, MIN, SEC);
+	else swprintf(time, 11, L"[0%d:%d:%d]", HOUR, MIN, SEC);
+	else if (MIN < 10) if (SEC < 10) swprintf(time, 11, L"[%d:0%d:0%d]", HOUR, MIN, SEC);
+	else swprintf(time, 11, L"[%d:0%d:%d]", HOUR, MIN, SEC);
+	else if (SEC < 10) swprintf(time, 11, L"[%d:%d:0%d]", HOUR, MIN, SEC);
+	else swprintf(time, 11, L"[%d:%d:%d]", HOUR, MIN, SEC);
 
-	if (destination == NULL) {
-		WriteConsole(hConsole, time, 11, &charCount, NULL); // Prints time string to console
-	}
-	else {
-		fwprintf(fiop, L"%s", time); // Saves time string to log file
-	}
+	if (destination == NULL) WriteConsole(hConsole, time, 11, &charCount, NULL); // Prints time string to console
+	else fwprintf(fiop, L"%s", time); // Saves time string to log file
 }
 
 // Prints message to console
@@ -163,52 +168,19 @@ DWORD UpdateTimer(HWND window) {
 	while (isMinerRunning) {
 		Sleep(1000); // Waits 1 second
 		// Appends current time
-		sec++;
-		if (sec == 60) {
-			sec = 0;
-			min++;
-			if (min == 60) {
-				min = 0;
-				hour++;
-			}
+		sec++; if (sec == 60) {
+			sec = 0; min++; if (min == 60)
+				min = 0; hour++;
 		}
 		// Converts time to string
-		if (hour < 10) {
-			if (min < 10) {
-				if (sec < 10) {
-					swprintf(time, 9, L"0%d:0%d:0%d", hour, min, sec);
-				}
-				else {
-					swprintf(time, 9, L"0%d:0%d:%d", hour, min, sec);
-				}
-			}
-			else {
-				if (sec < 10) {
-					swprintf(time, 9, L"0%d:%d:0%d", hour, min, sec);
-				}
-				else {
-					swprintf(time, 9, L"0%d:%d:%d", hour, min, sec);
-				}
-			}
-		}
-		else {
-			if (min < 10) {
-				if (sec < 10) {
-					swprintf(time, 9, L"%d:0%d:0%d", hour, min, sec);
-				}
-				else {
-					swprintf(time, 9, L"%d:0%d:%d", hour, min, sec);
-				}
-			}
-			else {
-				if (sec < 10) {
-					swprintf(time, 9, L"%d:%d:0%d", hour, min, sec);
-				}
-				else {
-					swprintf(time, 9, L"%d:%d:%d", hour, min, sec);
-				}
-			}
-		}
+		if (hour < 10) if (min < 10) if (sec < 10) swprintf(time, 9, L"0%d:0%d:0%d", hour, min, sec);
+		else swprintf(time, 9, L"0%d:0%d:%d", hour, min, sec);
+		else if (sec < 10) swprintf(time, 9, L"0%d:%d:0%d", hour, min, sec);
+		else swprintf(time, 9, L"0%d:%d:%d", hour, min, sec);
+		else if (min < 10) if (sec < 10) swprintf(time, 9, L"%d:0%d:0%d", hour, min, sec);
+		else swprintf(time, 9, L"%d:0%d:%d", hour, min, sec);
+		else if (sec < 10) swprintf(time, 9, L"%d:%d:0%d", hour, min, sec);
+		else swprintf(time, 9, L"%d:%d:%d", hour, min, sec);
 		SetWindowText(window, time); // Changes text of timer window
 	}
 	SetWindowText(window, L"00:00:00"); // Resets timer
@@ -220,7 +192,7 @@ void StartMiner(HWND hWnd, HWND minerToggle, HWND timer) {
 	isMinerRunning = TRUE; // Sets miner status to active
 	SetWindowText(hWnd, L"CrunchNet Miner (Active)"); // Changes text of dashboard window
 	SetWindowText(minerToggle, L"Stop miner"); // Changes text of miner toggle button
-	timerThread = CreateThread(NULL, 0, UpdateTimer, timer, NULL, NULL); // Starts timer
+	timerThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)UpdateTimer, timer, NULL, NULL); // Starts timer
 
 	// Miner initialization
 	GetSystemTime(&systime); // Gets current time

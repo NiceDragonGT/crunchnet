@@ -1,5 +1,5 @@
 /*
-updcheck_w.h: CrunchNet Updater check function
+updcheck_w.h: CrunchNet Updater check function (Windows)
 Copyright (c) 2018 Kade Burnside
 */
 

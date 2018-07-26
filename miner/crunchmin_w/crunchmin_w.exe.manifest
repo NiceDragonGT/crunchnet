@@ -3,7 +3,7 @@
   <assemblyIdentity
       version="0.1.0.0"
       processorArchitecture="amd64"
-      name="CadellaBurnside.CrunchNet.CrunchNetMinerWindows"
+      name="CadellaBurnside.CrunchNet.MinerWindows"
       type="win32"
 />
   <description>CrunchNet Miner (Windows)</description>

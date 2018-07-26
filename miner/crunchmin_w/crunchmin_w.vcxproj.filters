@@ -36,11 +36,11 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <Manifest Include="crunchmin_w.exe.manifest" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="crunchmin_w.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="crunchmin_w.exe.manifest" />
   </ItemGroup>
 </Project>
