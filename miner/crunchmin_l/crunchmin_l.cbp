@@ -34,6 +34,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="-lX11" />
+			<Add option="-pthread" />
 		</Linker>
 		<Unit filename="crnminer_l.h" />
 		<Unit filename="crunchmin_l.c">

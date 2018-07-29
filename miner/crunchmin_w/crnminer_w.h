@@ -35,6 +35,7 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 #include <ShlObj.h>
 
 BOOL isMinerRunning = FALSE; // Miner status
+BOOL promptStatus = FALSE; // Miner termination prompt status
 
 HANDLE hConsole; // Console output handle
 DWORD charCount; // Characters written to console
@@ -49,11 +50,9 @@ SYSTEMTIME systime; // System time structure
 
 FILE* fiop; // File IO pointer
 
-HANDLE timerThread; // Handle to timer thread
-
 // Miner configuration
-LARGE_INTEGER accountId, storageAlloc; // Account ID, wallet ID and storage space to be allocated (in bytes)
-BYTE maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
+LARGE_INTEGER accountId, storageAlloc; // Account ID	 and storage space to be allocated (in bytes)
+WORD maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
 LPWSTR accountName; // Username
 LPWSTR minerName; // Miner name
 LPWSTR saveLocation; // Save location
@@ -152,7 +151,6 @@ void ResetMiner(HWND hWnd, HWND minerToggle) {
 	WriteTime(1); // Saves current time to log file
 	fwprintf(fiop, L"\n\n"); // Saves line break character to log file
 	fclose(fiop); // Closes log file stream
-	CloseHandle(timerThread); // Stops timer thread
 	SetWindowText(hWnd, L"CrunchNet Miner (Inactive)"); // Changes text of dashboard window
 	SetWindowText(minerToggle, L"Start miner"); // Changes text of miner toggle button
 }
@@ -169,8 +167,9 @@ DWORD UpdateTimer(HWND window) {
 		Sleep(1000); // Waits 1 second
 		// Appends current time
 		sec++; if (sec == 60) {
-			sec = 0; min++; if (min == 60)
+			sec = 0; min++; if (min == 60) {
 				min = 0; hour++;
+			}
 		}
 		// Converts time to string
 		if (hour < 10) if (min < 10) if (sec < 10) swprintf(time, 9, L"0%d:0%d:0%d", hour, min, sec);
@@ -187,12 +186,39 @@ DWORD UpdateTimer(HWND window) {
 	return 0;
 }
 
+// Miner execution function
+DWORD MinerExecution(void* unused) {
+	// Miner execution variables
+	WORD currentProcesses = 0; // Number of processes currently running
+
+	// Miner execution loop
+	while (isMinerRunning) {
+		// Checks if miner termination prompt has been sent
+		if (!promptStatus) {
+			// If not, check if all processes are being ultilized
+			if (currentProcesses < maxProcesses) {
+				// If not, find application to run
+			}
+		}
+		else {
+			// Prints termination message to console
+			WriteMessage(L"Miner termination prompt sent. Preparing to terminate miner.", 60, 2);
+			while (currentProcesses) break; // Waits for all processes to finish
+
+			/* Notifies CrunchNet that miner has ended */
+
+			isMinerRunning = FALSE; // Sets miner status to false
+		}
+	}
+	return 0;
+}
+
 // Starts miner
 void StartMiner(HWND hWnd, HWND minerToggle, HWND timer) {
 	isMinerRunning = TRUE; // Sets miner status to active
 	SetWindowText(hWnd, L"CrunchNet Miner (Active)"); // Changes text of dashboard window
 	SetWindowText(minerToggle, L"Stop miner"); // Changes text of miner toggle button
-	timerThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)UpdateTimer, timer, NULL, NULL); // Starts timer
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)UpdateTimer, timer, NULL, NULL); // Starts timer
 
 	// Miner initialization
 	GetSystemTime(&systime); // Gets current time
@@ -218,14 +244,19 @@ void StartMiner(HWND hWnd, HWND minerToggle, HWND timer) {
 		ResetMiner(hWnd, minerToggle); // Resets miner
 		return;
 	}
+
+	/* Notifies CrunchNet that miner has started */
+
+	WriteMessage(L"Miner initialization succeeded. Now mining", 42, 2); // Prints initialization success message
+	CreateThread(NULL, 0, MinerExecution, NULL, NULL, NULL); // Starts miner thread
 }
 
 // Stops miner
 void StopMiner(HWND hWnd, HWND minerToggle) {
-	/* Prompt code goes here */
-
+	promptStatus = FALSE; // Sends miner loop termination prompt
+	while (isMinerRunning) break; // Waits for miner to finish
 	WriteMessage(L"Miner has stopped.", 22, 2); // Prints miner termination message to console and log file
-	ResetMiner(hWnd, minerToggle); // Calls ResetMiner function (avoids code duplication)
+	ResetMiner(hWnd, minerToggle); // Resets miner
 }
 
 #endif

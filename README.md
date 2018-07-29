@@ -5,7 +5,10 @@ A small but powerful blockchain written in C.
 #### Windows (Vista and later)
 ###### Latest stable version: *none*
 ###### Latest development version: 0.1
-#### Mac OS & Linux currently not supported
+#### Linux (Testing done on Ubuntu 18.04)
+###### Latest stable version: *none*
+###### Latest development version: 0.1
+#### Mac OS currently not supported
 ### Dashboard
 #### Desktop Web
 ###### Latest stable version: *none*

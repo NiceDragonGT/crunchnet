@@ -162,6 +162,9 @@
   <ItemGroup>
     <Image Include="D:\Backups\Icons &amp; Banners\CrunchNet\icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\..\miner\crunchmin_w\node_em_w.exe.manifest" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

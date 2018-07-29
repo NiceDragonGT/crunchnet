@@ -22,16 +22,16 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 
 // Internal CrunchNet include
 #include "crnminer_l.h"
-#include <X11/Xlib.h>
 
 // X colour variables
-XColor deeppinkC, hotpinkC, lightpinkC;
+XColor deeppinkC, hotpinkC, lightpinkC, greyC;
 Colormap colourMap;
 
 // Colours
 char deeppink[] = "#FF1493";
 char hotpink[] = "#FF69B4";
 char lightpink[] = "#FFB6C1";
+char grey[] = "#C0C0C0";
 
 // Entry point of application
 int main(){
@@ -91,11 +91,15 @@ int main(){
         XParseColor(display, colourMap, deeppink, &deeppinkC);
         XAllocColor(display, colourMap, &deeppinkC);
 
+        // Grey
+        XParseColor(display, colourMap, grey, &greyC);
+        XAllocColor(display, colourMap, &greyC);
+
         /* Stores text items */
-        const char textNum = 13; // Number of text items
+        const short textNum = 13; // Number of text items
         XTextItem* text[textNum]; // Text items (XTextItem)
         // Allocates memory
-        for(char i = 0; i < textNum; i++){
+        for(short i = 0; i < textNum; i++){
             text[i] = malloc(sizeof(XTextItem));
         }
 
@@ -178,11 +182,12 @@ int main(){
         text[12]->nchars = 28;
 
         BOOL isWindowOpen = TRUE;
+
         // Event loop
         while(isWindowOpen){
             XNextEvent(display, &event);
             switch(event.type){
-            case Expose: // Draw/redraw the window (equivalent of WM_PAINT in Windows)
+            case Expose: // Draw/redraw the window (equivalent of WM_PAINT in Windows). Also used for WM_CREATE
                 // Shapes
                 XSetForeground(display, DefaultGC(display, screen), deeppinkC.pixel); // Sets foreground colour to deep pink
                 XFillRectangle(display, window, DefaultGC(display, screen), 0, 0, 600, 30); // Draws top rectangle
@@ -205,12 +210,47 @@ int main(){
                 XDrawText(display, window, DefaultGC(display, screen), 15, 199, text[6], 1); // Draws total balance label
                 XDrawText(display, window, DefaultGC(display, screen), 15, 219, text[7], 1); // Draws CryptX/hour label
                 XDrawText(display, window, DefaultGC(display, screen), 15, 239, text[8], 1); // Draws CryptX/day label
-                XDrawText(display, window, DefaultGC(display, screen), 340, 84, text[9], 1); // Draws miner name description
-                XDrawText(display, window, DefaultGC(display, screen), 310, 104, text[10], 1); // Draws save location label
-                XDrawText(display, window, DefaultGC(display, screen), 310, 134, text[11], 1); // Draws allocated storage label
-                XDrawText(display, window, DefaultGC(display, screen), 310, 154, text[12], 1); // Draws max processes label
+                XDrawText(display, window, DefaultGC(display, screen), 340, 89, text[9], 1); // Draws miner name description
+                XDrawText(display, window, DefaultGC(display, screen), 310, 106, text[10], 1); // Draws save location label
+                XDrawText(display, window, DefaultGC(display, screen), 310, 149, text[11], 1); // Draws allocated storage label
+                XDrawText(display, window, DefaultGC(display, screen), 310, 169, text[12], 1); // Draws max processes label
+
+                /* Static text controls */
+                // Background
+                XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets foreground colour to white
+                XFillRectangle(display, window, DefaultGC(display, screen), 140, 147, 150, 18); // Miner session length
+                XFillRectangle(display, window, DefaultGC(display, screen), 120, 167, 170, 18); // Session earnings
+                XFillRectangle(display, window, DefaultGC(display, screen), 120, 187, 170, 18); // Total balance
+                XFillRectangle(display, window, DefaultGC(display, screen), 120, 207, 170, 18); // CryptX/hour
+                XFillRectangle(display, window, DefaultGC(display, screen), 120, 227, 170, 18); // CryptX/day
+                XFillRectangle(display, window, DefaultGC(display, screen), 310, 114, 275, 20); // Save location
+
+                /* Text boxes */
+                // Background
+                XFillRectangle(display, window, DefaultGC(display, screen), 15, 55, 275, 20); // Username
+                XFillRectangle(display, window, DefaultGC(display, screen), 310, 55, 275, 20); // Miner name
+                XFillRectangle(display, window, DefaultGC(display, screen), 420, 137, 100, 18); // Allocated storage text
+
+                /* Buttons */
+                // Background
+                XSetForeground(display, DefaultGC(display, screen), greyC.pixel); // Sets foreground colour to grey
+                XFillRectangle(display, window, DefaultGC(display, screen), 15, 85, 275, 30); // Check for username
+                XFillRectangle(display, window, DefaultGC(display, screen), 395, 93, 190, 18); // Browse
+                XFillRectangle(display, window, DefaultGC(display, screen), 147, 285, 150, 30); // Start/stop miner
+                XFillRectangle(display, window, DefaultGC(display, screen), 303, 285, 150, 30); // Save configuration
+                XFillRectangle(display, window, DefaultGC(display, screen), 147, 335, 150, 30); // About CrunchNet
+                XFillRectangle(display, window, DefaultGC(display, screen), 303, 335, 150, 30); // View license
+
+                /* Drop-down lists */
+
+                /* Trackbars */
+                // Background
+                XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets foreground colour to grey
+                XFillRectangle(display, window, DefaultGC(display, screen), 310, 179, 275, 40); // Max processes
+
                 break;
             case ClientMessage: // Handle window close event (equivalent of WM_DESTROY in Windows)
+                WriteMessage("Dashboard window closed", 0);
                 isWindowOpen = FALSE;
                 break;
             }
@@ -220,7 +260,7 @@ int main(){
         XCloseDisplay(display); // Closes connection to X Server
 
         // Frees memory containing text items
-        for(char i = 0; i < textNum; i++){
+        for(short i = 0; i < textNum; i++){
             free(text[i]);
         }
 

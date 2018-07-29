@@ -3,18 +3,26 @@
 	"crnminer_l.h"
 	<X11/Xlib.h>
 
+1532682255 h>
+
 1532569312 /media/cadellapowell61/New Volume/crunchnet/miner/crunchmin_l/crnminer_l.h
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<miner/updcheck_l.h>
 
+1532569312 check_l.h>
+
 1532568528 /media/cadellapowell61/New Volume/crunchnet/miner/updcheck_l.h
 	<string.h>
 	<unistd.h>
 
+1532568528 
+
 1532643194 source:k:\crunchnet\miner\crunchmin_l\crunchmin_l.c
 	"crnminer_l.h"
+
+1532643194 l.h"
 
 1532569312 k:\crunchnet\miner\crunchmin_l\crnminer_l.h
 	<stdio.h>
@@ -25,4 +33,20 @@
 1532568528 k:\crunchnet\miner\updcheck_l.h
 	<string.h>
 	<unistd.h>
+
+1532772764 source:/media/cadellapowell61/New Volume/crunchnet/miner/crunchmin_l/crunchmin_l.c
+	"crnminer_l.h"
+
+1532746963 /media/cadellapowell61/New Volume/crunchnet/miner/crunchmin_l/crnminer_l.h
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	<X11/Xlib.h>
+	<miner/updcheck_l.h>
+
+1532747185 /media/cadellapowell61/New Volume/crunchnet/miner/updcheck_l.h
+	<string.h>
+	<unistd.h>
+	<pthread.h>
 

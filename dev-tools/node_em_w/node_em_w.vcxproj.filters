@@ -34,4 +34,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\..\miner\crunchmin_w\node_em_w.exe.manifest" />
+  </ItemGroup>
 </Project>

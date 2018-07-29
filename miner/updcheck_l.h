@@ -28,6 +28,7 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 
 // POSIX API includes
 #include <unistd.h>
+#include <pthread.h>
 
 // Redefines NULL to be of type "int" instead of "void*"
 #undef NULL
@@ -40,10 +41,21 @@ typedef int BOOL; // Typedefs BOOL (from Windows API)
 #define TRUE 1
 #define FALSE 0
 
+// Typedefs LARGE_INTEGER (from Windows API)
+typedef union{
+    struct{
+        unsigned int LowPart;
+        int HighPart;
+    };
+    long long QuadPart;
+}LARGE_INTEGER;
+
 // Update check function
 BOOL CheckForUpdate(){
 	BOOL rVal = FALSE; // Update status (value to be returned)
+
 	// Update check code goes here
+
 	return rVal; // Returns update status
 }
 
