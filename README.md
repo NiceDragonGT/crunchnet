@@ -2,21 +2,16 @@
 A small but powerful blockchain written in C.
 ## Current releases (Universal release: *none*)
 ### Miner
-#### Windows (Vista and later)
+#### Windows (7 and later)
 ###### Latest stable version: *none*
 ###### Latest development version: 0.1
-#### Linux (Testing done on Ubuntu 18.04)
-###### Latest stable version: *none*
-###### Latest development version: 0.1
+#### Linux support coming in 1.0
 #### Mac OS currently not supported
 ### Dashboard
 #### Desktop Web
 ###### Latest stable version: *none*
 ###### Latest development version: 0.1
 #### Mobile Web
-###### Latest stable version: *none*
-###### Latest development version: 0.1
-#### Android (using Cordova 6.3.1, official builds for Android 4.0.3 and later)
 ###### Latest stable version: *none*
 ###### Latest development version: 0.1
 ## Development environment

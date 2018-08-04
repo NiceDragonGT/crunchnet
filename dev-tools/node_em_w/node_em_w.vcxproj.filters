@@ -35,6 +35,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="..\..\miner\crunchmin_w\node_em_w.exe.manifest" />
+    <Xsd Include="node_em_w.exe.manifest">
+      <Filter>Source Files</Filter>
+    </Xsd>
   </ItemGroup>
 </Project>

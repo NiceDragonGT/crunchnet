@@ -27,64 +27,22 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 #include <Windows.h>
 #include <api/include/crunchnet.h>
 
-// CrunchNet token type
-typedef struct _CTK_T {
-	ucnum16 processId;
-	ucnum64 appId;
-	handle winDll, winCon;
-}*TCTK;
+// Actual CrunchNet back-end application type
+typedef struct _CTK { CNUM64 appId; CRNSTR dllPath; }*ATCTK;
 
-// Casts input token to struct pointer
-#define TK_CONVERT TCTK tToken = (TCTK)token
+// Function macro
+#define GETFUNC(impName, capsName, rType, pTypes)\
+ATCTK tk = (ATCTK)token;\
+HINSTANCE dllHandle = LoadLibrary(tk->dllPath);\
+typedef rType##(*##capsName)pTypes;\
+capsName func = (capsName)GetProcAddress(dllHandle, impName)
 
-// Implementation function call defenition
-#define IMPCALL(name, impname, type, params)\
-typedef type##(*##name)##params;\
-name func = (name)GetProcAddress(tToken->winDll, impname)
-
-/* Functions */
-
-// CrunchInit
-nullret CrunchInit(CTK token, FLOC fPath) {
-	TK_CONVERT;
-	tToken->winDll = LoadLibrary((LPCSTR)fPath[1]); // Loads crnapi_b.dll (or crnapidev_b.dll if run in emulator)
-	IMPCALL(CRUNCHINIT, "impCrunchInit", nullret, (CTK, FLOC)); // Gets implementation function
-	(func)(token, fPath); // Calls implementation function
-}
-
-// CrunchEnd
-NCRNFUNC CrunchEnd(CTK token, FLOC fPath) {
-	TK_CONVERT;
-	IMPCALL(CRUNCHEND, "impCrunchEnd", NCRNFUNC, (CTK, FLOC)); // Gets implementation function
-	NCRNFUNC rVal = (func)(token, fPath); // Calls implementation function
-	FreeLibrary(tToken->winDll); // Unloads library
-	return rVal; // Returns value returned by implementation function
-}
-
-// AppLog
-nullret AppLog(CTK token, crnstr msg, ucnum16 len) {
-	TK_CONVERT;
-	IMPCALL(APPLOG, "impAppLog", nullret, (CTK, crnstr, ucnum16)); // Gets implementation function
-	(func)(token, msg, len); // Calls implementation function
-}
-
-// AppErr
-nullret AppErr(CTK token, crnstr msg, ucnum16 len) {
-	TK_CONVERT;
-	IMPCALL(APPERR, "impAppErr", nullret, (CTK, crnstr, ucnum16)); // Gets implementation function
-	(func)(token, msg, len); // Calls implementation function
-}
-
-// GetAccountById
-cbool GetAccountById(CTK token, ucnum64 id, pcrnacc crnacc) {
-	TK_CONVERT;
-	IMPCALL(GETACCOUNTBYID, "impGetAccountById", cbool, (CTK, ucnum64, pcrnacc)); // Gets implementation function
-	return (func)(token, id, crnacc); // Calls implementation function
-}
-
-// GetAccountByUsername
-cbool GetAccountByUsername(CTK token, crnstr username, pcrnacc crnacc) {
-	TK_CONVERT;
-	IMPCALL(GETACCOUNTBYUSERNAME, "impGetAccountByUsername", cbool, (CTK, crnstr, pcrnacc)); // Gets implementation function
-	return (func)(token, username, crnacc); // Calls implementation function
-}
+// Standard functions
+CHAND MemAlloc(CTK token, CNUM64 size) { GETFUNC("impMemAlloc", MEMALLOC, CHAND, (CTK, CNUM64)); return (func)(token, size); }
+// Initialization functions
+// Developer log API
+// File API
+// Wallet API
+// Miner API
+// Account API
+// Application interactivity API

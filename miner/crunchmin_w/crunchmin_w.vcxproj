@@ -90,6 +90,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <ExceptionHandling>false</ExceptionHandling>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -107,6 +110,8 @@
       <AdditionalIncludeDirectories>K:/crunchnet</AdditionalIncludeDirectories>
       <ExceptionHandling>false</ExceptionHandling>
       <AssemblerOutput>NoListing</AssemblerOutput>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,6 +129,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <ExceptionHandling>false</ExceptionHandling>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +153,8 @@
       <AdditionalIncludeDirectories>K:/crunchnet</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <ExceptionHandling>false</ExceptionHandling>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,7 +170,10 @@
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crunchmin_w.c" />
+    <ClCompile Include="crunchmin_w.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">K:/crunchnet/miner/crunchmin_w/Dependencies/curl-7.61.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">K:/crunchnet/miner/crunchmin_w/Dependencies/curl-7.61.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="crunchmin_w.rc" />

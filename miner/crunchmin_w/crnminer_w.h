@@ -51,7 +51,7 @@ SYSTEMTIME systime; // System time structure
 FILE* fiop; // File IO pointer
 
 // Miner configuration
-LARGE_INTEGER accountId, storageAlloc; // Account ID	 and storage space to be allocated (in bytes)
+LARGE_INTEGER accountId, storageAlloc; // Account ID and storage space to be allocated (in bytes)
 WORD maxProcesses; // CrunchNet applications that can run at once (limit is SYSTEM_INFO.dwNumberOfProcessors)
 LPWSTR accountName; // Username
 LPWSTR minerName; // Miner name
@@ -64,7 +64,7 @@ LPWSTR saveLocation; // Save location
 
 // Gets data from configuration file
 void GetConfig() {
-	LPBYTE buffer; // File buffer
+	LPBYTE buffer = 0; // File buffer
 
 	// Opens file for reading
 	if (_wfopen_s(&fiop, L"config.crn", L"r")) {
@@ -79,18 +79,16 @@ void GetConfig() {
 		// Checks if length is 0
 		if (length) {
 			buffer = malloc(length); // Allocates memory
-			// Parses configuration file
-			free(buffer); // Frees allocated memory
+			fread(buffer, 1, length, fiop); // Loads file into memory
+			/* Parses configuration */
+			// Account ID
+			accountId.HighPart = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
+			accountId.LowPart = buffer[4] + (buffer[5] << 8) + (buffer[6] << 16) + (buffer[7] << 24);
+
 			fclose(fiop); // Closes file
 		}
-		else {
-			fclose(fiop); // Closes file
-			_wfopen_s(&fiop, L"config.crn", L"w"); // Opens file for writing
-			// Creates blank configuration
-			BYTE blankByte = 0; // Blank byte
-			for (BYTE i = 0; i < 0; i++)
-				fwrite(&blankByte, 1, 1, fiop); // Writes empty byte to file
-		}
+		free(buffer); // Frees allocated memory
+		fclose(fiop); // Closes file
 	}
 }
 
@@ -186,6 +184,11 @@ DWORD UpdateTimer(HWND window) {
 	return 0;
 }
 
+// Application execution function
+void ApplicationExecution() {
+
+}
+
 // Miner execution function
 DWORD MinerExecution(void* unused) {
 	// Miner execution variables
@@ -198,6 +201,14 @@ DWORD MinerExecution(void* unused) {
 			// If not, check if all processes are being ultilized
 			if (currentProcesses < maxProcesses) {
 				// If not, find application to run
+
+				/* Sends a request to CrunchNet asking for what application need to be run */
+
+				/* Checks what applications have been downloaded */
+
+				/* Calculate application priorities (takes applications already running into account) */
+
+				/* Executes selected application */
 			}
 		}
 		else {
@@ -253,10 +264,11 @@ void StartMiner(HWND hWnd, HWND minerToggle, HWND timer) {
 
 // Stops miner
 void StopMiner(HWND hWnd, HWND minerToggle) {
-	promptStatus = FALSE; // Sends miner loop termination prompt
+	promptStatus = TRUE; // Sends miner loop termination prompt
 	while (isMinerRunning) break; // Waits for miner to finish
 	WriteMessage(L"Miner has stopped.", 22, 2); // Prints miner termination message to console and log file
 	ResetMiner(hWnd, minerToggle); // Resets miner
+	promptStatus = FALSE; // Resets termination prompt
 }
 
 #endif

@@ -54,7 +54,7 @@ int main(){
         // Window variables
         Display* display; // Display
         int screen; // Screen
-        Window window; // Window
+        Window window, console; // Windows
         XEvent event; // Window event
 
         // Open connection with X Server
@@ -78,7 +78,7 @@ int main(){
         Atom delWindow = XInternAtom(display, "WM_DELETE_WINDOW", 0);
         XSetWMProtocols(display, window, &delWindow, 1);
 
-        XSelectInput(display, window, ExposureMask | KeyPressMask); // Select types of events
+        XSelectInput(display, window, ExposureMask | KeyPressMask | ButtonPressMask); // Select types of events
         XMapWindow(display, window); // Display window
         XStoreName(display, window, "CrunchNet Miner (Inactive)"); // Sets window title
 
@@ -96,7 +96,7 @@ int main(){
         XAllocColor(display, colourMap, &greyC);
 
         /* Stores text items */
-        const short textNum = 13; // Number of text items
+        const short textNum = 19; // Number of text items
         XTextItem* text[textNum]; // Text items (XTextItem)
         // Allocates memory
         for(short i = 0; i < textNum; i++){
@@ -181,78 +181,176 @@ int main(){
         text[12]->font = 0;
         text[12]->nchars = 28;
 
+        // Check for username label
+        text[13]->chars = "Check for username";
+        text[13]->delta = 0;
+        text[13]->font = 0;
+        text[13]->nchars = 18;
+
+        // Browse label
+        text[14]->chars = "Browse";
+        text[14]->delta = 0;
+        text[14]->font = 0;
+        text[14]->nchars = 6;
+
+        // Start/stop miner label
+        text[15]->chars = "Start miner";
+        text[15]->delta = 0;
+        text[15]->font = 0;
+        text[15]->nchars = 11;
+
+        // Save configuration label
+        text[16]->chars = "Save configuration";
+        text[16]->delta = 0;
+        text[16]->font = 0;
+        text[16]->nchars = 18;
+
+        // About CrunchNet label
+        text[17]->chars = "About CrunchNet";
+        text[17]->delta = 0;
+        text[17]->font = 0;
+        text[17]->nchars = 15;
+
+        // View license label
+        text[18]->chars = "View license";
+        text[18]->delta = 0;
+        text[18]->font = 0;
+        text[18]->nchars = 12;
+
         BOOL isWindowOpen = TRUE;
 
         // Event loop
         while(isWindowOpen){
-            XNextEvent(display, &event);
-            switch(event.type){
-            case Expose: // Draw/redraw the window (equivalent of WM_PAINT in Windows). Also used for WM_CREATE
-                // Shapes
-                XSetForeground(display, DefaultGC(display, screen), deeppinkC.pixel); // Sets foreground colour to deep pink
-                XFillRectangle(display, window, DefaultGC(display, screen), 0, 0, 600, 30); // Draws top rectangle
-                XFillRectangle(display, window, DefaultGC(display, screen), 0, 330, 600, 40); // Draws bottom rectangle
-                XSetForeground(display, DefaultGC(display, screen), hotpinkC.pixel); // Sets foreground colour to hot pink
-                XFillRectangle(display, window, DefaultGC(display, screen), 10, 50, 285, 70); // Draws account options section
-                XFillRectangle(display, window, DefaultGC(display, screen), 10, 140, 285, 130); // Draws earnings information section
-                XFillRectangle(display, window, DefaultGC(display, screen), 305, 50, 285, 220); // Draws miner configuration section
-                XFillRectangle(display, window, DefaultGC(display, screen), 10, 280, 580, 40); // Draws rectangle containing miner toggle button
+            if(!consolePrintStatus){
+                XNextEvent(display, &event);
+                switch(event.type){
+                case Expose: // Draw/redraw the window (equivalent of WM_PAINT in Windows). Also used for WM_CREATE
+                    // Shapes
+                    XSetForeground(display, DefaultGC(display, screen), deeppinkC.pixel); // Sets foreground colour to deep pink
+                    XFillRectangle(display, window, DefaultGC(display, screen), 0, 0, 600, 30); // Draws top rectangle
+                    XFillRectangle(display, window, DefaultGC(display, screen), 0, 330, 600, 40); // Draws bottom rectangle
+                    XSetForeground(display, DefaultGC(display, screen), hotpinkC.pixel); // Sets foreground colour to hot pink
+                    XFillRectangle(display, window, DefaultGC(display, screen), 10, 50, 285, 70); // Draws account options section
+                    XFillRectangle(display, window, DefaultGC(display, screen), 10, 140, 285, 130); // Draws earnings information section
+                    XFillRectangle(display, window, DefaultGC(display, screen), 305, 50, 285, 220); // Draws miner configuration section
+                    XFillRectangle(display, window, DefaultGC(display, screen), 10, 280, 580, 40); // Draws rectangle containing miner toggle button
 
-                // Text
-                XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets text colour to white
-                XDrawText(display, window, DefaultGC(display, screen), 220, 18, text[0], 1); // Draws header text
-                XSetForeground(display, DefaultGC(display, screen), BlackPixel(display, screen)); // Sets text colour to black
-                XDrawText(display, window, DefaultGC(display, screen), 110, 44, text[1], 1); // Draws account options header
-                XDrawText(display, window, DefaultGC(display, screen), 95, 134, text[2], 1); // Draws earnings information header
-                XDrawText(display, window, DefaultGC(display, screen), 395, 44, text[3], 1); // Draws miner configuration header
-                XDrawText(display, window, DefaultGC(display, screen), 15, 159, text[4], 1); // Draws miner session length label
-                XDrawText(display, window, DefaultGC(display, screen), 15, 179, text[5], 1); // Draws session earnings label
-                XDrawText(display, window, DefaultGC(display, screen), 15, 199, text[6], 1); // Draws total balance label
-                XDrawText(display, window, DefaultGC(display, screen), 15, 219, text[7], 1); // Draws CryptX/hour label
-                XDrawText(display, window, DefaultGC(display, screen), 15, 239, text[8], 1); // Draws CryptX/day label
-                XDrawText(display, window, DefaultGC(display, screen), 340, 89, text[9], 1); // Draws miner name description
-                XDrawText(display, window, DefaultGC(display, screen), 310, 106, text[10], 1); // Draws save location label
-                XDrawText(display, window, DefaultGC(display, screen), 310, 149, text[11], 1); // Draws allocated storage label
-                XDrawText(display, window, DefaultGC(display, screen), 310, 169, text[12], 1); // Draws max processes label
+                    // Text
+                    XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets text colour to white
+                    XDrawText(display, window, DefaultGC(display, screen), 220, 18, text[0], 1); // Draws header text
+                    XSetForeground(display, DefaultGC(display, screen), BlackPixel(display, screen)); // Sets text colour to black
+                    XDrawText(display, window, DefaultGC(display, screen), 110, 44, text[1], 1); // Draws account options header
+                    XDrawText(display, window, DefaultGC(display, screen), 95, 134, text[2], 1); // Draws earnings information header
+                    XDrawText(display, window, DefaultGC(display, screen), 395, 44, text[3], 1); // Draws miner configuration header
+                    XDrawText(display, window, DefaultGC(display, screen), 15, 159, text[4], 1); // Draws miner session length label
+                    XDrawText(display, window, DefaultGC(display, screen), 15, 179, text[5], 1); // Draws session earnings label
+                    XDrawText(display, window, DefaultGC(display, screen), 15, 199, text[6], 1); // Draws total balance label
+                    XDrawText(display, window, DefaultGC(display, screen), 15, 219, text[7], 1); // Draws CryptX/hour label
+                    XDrawText(display, window, DefaultGC(display, screen), 15, 239, text[8], 1); // Draws CryptX/day label
+                    XDrawText(display, window, DefaultGC(display, screen), 340, 89, text[9], 1); // Draws miner name description
+                    XDrawText(display, window, DefaultGC(display, screen), 310, 106, text[10], 1); // Draws save location label
+                    XDrawText(display, window, DefaultGC(display, screen), 310, 149, text[11], 1); // Draws allocated storage label
+                    XDrawText(display, window, DefaultGC(display, screen), 310, 169, text[12], 1); // Draws max processes label
 
-                /* Static text controls */
-                // Background
-                XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets foreground colour to white
-                XFillRectangle(display, window, DefaultGC(display, screen), 140, 147, 150, 18); // Miner session length
-                XFillRectangle(display, window, DefaultGC(display, screen), 120, 167, 170, 18); // Session earnings
-                XFillRectangle(display, window, DefaultGC(display, screen), 120, 187, 170, 18); // Total balance
-                XFillRectangle(display, window, DefaultGC(display, screen), 120, 207, 170, 18); // CryptX/hour
-                XFillRectangle(display, window, DefaultGC(display, screen), 120, 227, 170, 18); // CryptX/day
-                XFillRectangle(display, window, DefaultGC(display, screen), 310, 114, 275, 20); // Save location
+                    /* Static text controls */
+                    // Background
+                    XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets foreground colour to white
+                    XFillRectangle(display, window, DefaultGC(display, screen), 140, 147, 150, 18); // Miner session length
+                    XFillRectangle(display, window, DefaultGC(display, screen), 120, 167, 170, 18); // Session earnings
+                    XFillRectangle(display, window, DefaultGC(display, screen), 120, 187, 170, 18); // Total balance
+                    XFillRectangle(display, window, DefaultGC(display, screen), 120, 207, 170, 18); // CryptX/hour
+                    XFillRectangle(display, window, DefaultGC(display, screen), 120, 227, 170, 18); // CryptX/day
+                    XFillRectangle(display, window, DefaultGC(display, screen), 310, 114, 275, 20); // Save location
 
-                /* Text boxes */
-                // Background
-                XFillRectangle(display, window, DefaultGC(display, screen), 15, 55, 275, 20); // Username
-                XFillRectangle(display, window, DefaultGC(display, screen), 310, 55, 275, 20); // Miner name
-                XFillRectangle(display, window, DefaultGC(display, screen), 420, 137, 100, 18); // Allocated storage text
+                    /* Text boxes */
+                    // Background
+                    XFillRectangle(display, window, DefaultGC(display, screen), 15, 55, 275, 20); // Username
+                    XFillRectangle(display, window, DefaultGC(display, screen), 310, 55, 275, 20); // Miner name
+                    XFillRectangle(display, window, DefaultGC(display, screen), 420, 137, 100, 18); // Allocated storage text
 
-                /* Buttons */
-                // Background
-                XSetForeground(display, DefaultGC(display, screen), greyC.pixel); // Sets foreground colour to grey
-                XFillRectangle(display, window, DefaultGC(display, screen), 15, 85, 275, 30); // Check for username
-                XFillRectangle(display, window, DefaultGC(display, screen), 395, 93, 190, 18); // Browse
-                XFillRectangle(display, window, DefaultGC(display, screen), 147, 285, 150, 30); // Start/stop miner
-                XFillRectangle(display, window, DefaultGC(display, screen), 303, 285, 150, 30); // Save configuration
-                XFillRectangle(display, window, DefaultGC(display, screen), 147, 335, 150, 30); // About CrunchNet
-                XFillRectangle(display, window, DefaultGC(display, screen), 303, 335, 150, 30); // View license
+                    /* Buttons */
+                    // Background
+                    XSetForeground(display, DefaultGC(display, screen), greyC.pixel); // Sets foreground colour to grey
+                    XFillRectangle(display, window, DefaultGC(display, screen), 15, 85, 275, 30); // Check for username
+                    XFillRectangle(display, window, DefaultGC(display, screen), 395, 93, 190, 18); // Browse
+                    XFillRectangle(display, window, DefaultGC(display, screen), 147, 285, 150, 30); // Start/stop miner
+                    XFillRectangle(display, window, DefaultGC(display, screen), 303, 285, 150, 30); // Save configuration
+                    XFillRectangle(display, window, DefaultGC(display, screen), 147, 335, 150, 30); // About CrunchNet
+                    XFillRectangle(display, window, DefaultGC(display, screen), 303, 335, 150, 30); // View license
+                    // Text
+                    XSetForeground(display, DefaultGC(display, screen), BlackPixel(display, screen)); // Sets foreground colour to black
+                    XDrawText(display, window, DefaultGC(display, screen), 100, 104, text[13], 1); // Check for username
+                    XDrawText(display, window, DefaultGC(display, screen), 470, 106, text[14], 1); // Browse
+                    XDrawText(display, window, DefaultGC(display, screen), 190, 303, text[15], 1); // Start/stop miner
+                    XDrawText(display, window, DefaultGC(display, screen), 325, 303, text[16], 1); // Save configuration
+                    XDrawText(display, window, DefaultGC(display, screen), 180, 353, text[17], 1); // About CrunchNet
+                    XDrawText(display, window, DefaultGC(display, screen), 340, 353, text[18], 1); // View license
 
-                /* Drop-down lists */
+                    /* Drop-down lists */
+                    // Background
+                    XSetForeground(display, DefaultGC(display, screen), greyC.pixel); // Sets foreground colour to grey
+                    XFillRectangle(display, window, DefaultGC(display, screen), 525, 137, 60, 18); // Allocated storage unit menu
 
-                /* Trackbars */
-                // Background
-                XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets foreground colour to grey
-                XFillRectangle(display, window, DefaultGC(display, screen), 310, 179, 275, 40); // Max processes
+                    /* Trackbars */
+                    // Background
+                    XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen)); // Sets foreground colour to white
+                    XFillRectangle(display, window, DefaultGC(display, screen), 310, 179, 275, 40); // Max processes
 
-                break;
-            case ClientMessage: // Handle window close event (equivalent of WM_DESTROY in Windows)
-                WriteMessage("Dashboard window closed", 0);
-                isWindowOpen = FALSE;
-                break;
+                    break;
+                case ButtonRelease: // Handle mouse clicks for controls
+                    // Checks if button was left click
+                    if(event.xbutton.button == 0){
+                        /* Text box check */
+
+                        /* Button check */
+                        pthread_t event_thread; // Button event thread
+                        void* button_event(int, int, int, int, int, int, XTextItem*); // Button event function declaration
+                        // Check for username
+                        if(event.xbutton.x >= 15 && event.xbutton.x <= 290){
+                            if(event.xbutton.y >= 85 && event.xbutton.y <= 115){
+
+                            }
+                        }
+                        // Browse
+                        if(event.xbutton.x >= 395 && event.xbutton.x <= 585){
+                            if(event.xbutton.y >= 93 && event.xbutton.y <= 111){
+
+                            }
+                        }
+                        // Start/stop miner
+                        if(event.xbutton.x >= 15 && event.xbutton.x <= 290){
+                            if(event.xbutton.y >= 85 && event.xbutton.y <= 115){
+
+                            }
+                        }
+                        // Save configuration
+                        if(event.xbutton.x >= 15 && event.xbutton.x <= 290){
+                            if(event.xbutton.y >= 85 && event.xbutton.y <= 115){
+
+                            }
+                        }
+                        // About CrunchNet
+                        if(event.xbutton.x >= 15 && event.xbutton.x <= 290){
+                            if(event.xbutton.y >= 85 && event.xbutton.y <= 115){
+
+                            }
+                        }
+                        // View license
+                        if(event.xbutton.x >= 15 && event.xbutton.x <= 290){
+                            if(event.xbutton.y >= 85 && event.xbutton.y <= 115){
+
+                            }
+                        }
+                        /* Drop-down list check */
+
+                        /* Trackbar check */
+                    }
+                    break;
+                case ClientMessage: // Handle window close event (equivalent of WM_DESTROY in Windows)
+                    WriteMessage("Dashboard window closed", 0);
+                    isWindowOpen = FALSE;
+                    break;
+                }
             }
         }
 
@@ -266,4 +364,10 @@ int main(){
 
         return 0;
     }
+}
+
+// Button event function
+void* button_event(int x, int y, int w, int h, int tx, int ty, XTextItem* textitem){
+
+    return 0;
 }

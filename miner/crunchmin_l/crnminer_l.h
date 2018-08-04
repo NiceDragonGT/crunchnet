@@ -38,6 +38,9 @@ along with CrunchNet. If not, see <http://www.gnu.org/licenses/>.
 BOOL isMinerRunning = FALSE; // Miner status
 BOOL promptStatus = FALSE; // Miner termination prompt status
 
+BOOL consolePrintStatus = FALSE; // Console print status
+char* consolePrintBuffer; // Console buffer
+
 time_t systime_raw;
 struct tm* systime;
 
