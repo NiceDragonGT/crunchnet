@@ -4,6 +4,9 @@ Copyright (c) 2018 Kade Burnside
 */
 #ifndef CRUNCHNET_H
 #define CRUNCHNET_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 /* CrunchNet types */
 // Basic types
 typedef void NULLRET; // Function without return type
@@ -85,4 +88,7 @@ CBOOL CRNChangePassword(CTK token, CRNSTR password, PCRNACCOUNT account); // Cha
 CBOOL CRNDeleteAccount(CTK token, PCRNACCOUNT account); // Deletes account
 // Application interactivity API
 CNUM8* CRNSendApplicationRequest(CTK token, CRNID appId, CNUM32 input); // Sends request to external CrunchNet application
+#ifdef __cplusplus
+}
+#endif
 #endif

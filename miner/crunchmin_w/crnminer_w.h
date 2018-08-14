@@ -184,91 +184,98 @@ DWORD UpdateTimer(HWND window) {
 	return 0;
 }
 
-// Application execution function
-void ApplicationExecution() {
-
-}
-
 // Miner execution function
 DWORD MinerExecution(void* unused) {
 	// Miner execution variables
 	WORD currentProcesses = 0; // Number of processes currently running
-
 	// Miner execution loop
 	while (isMinerRunning) {
 		// Checks if miner termination prompt has been sent
 		if (!promptStatus) {
 			// If not, check if all processes are being ultilized
 			if (currentProcesses < maxProcesses) {
-				// If not, find application to run
-
-				/* Sends a request to CrunchNet asking for what application need to be run */
-
-				/* Checks what applications have been downloaded */
-
-				/* Calculate application priorities (takes applications already running into account) */
-
-				/* Executes selected application */
+				STARTUPINFO appSi; // Startup info structure
+				appSi.hStdOutput = hConsole; // Console output handle
+				// Starts child process which then finds application to execute
+				CreateProcess(L"crnappexec.exe", NULL, NULL, NULL, TRUE, NULL, NULL, NULL, &appSi, &pi);
+				currentProcesses++; // Adds 1 to current process count
 			}
 		}
 		else {
 			// Prints termination message to console
 			WriteMessage(L"Miner termination prompt sent. Preparing to terminate miner.", 60, 2);
-			while (currentProcesses) break; // Waits for all processes to finish
+			while (currentProcesses) continue; // Waits for all processes to finish
 
 			/* Notifies CrunchNet that miner has ended */
 
 			isMinerRunning = FALSE; // Sets miner status to false
 		}
+		Sleep(50); // Adds delay to reduce CPU usage
 	}
 	return 0;
 }
 
 // Starts miner
 void StartMiner(HWND hWnd, HWND minerToggle, HWND timer) {
-	isMinerRunning = TRUE; // Sets miner status to active
-	SetWindowText(hWnd, L"CrunchNet Miner (Active)"); // Changes text of dashboard window
-	SetWindowText(minerToggle, L"Stop miner"); // Changes text of miner toggle button
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)UpdateTimer, timer, NULL, NULL); // Starts timer
+	if (!promptStatus) {
+		isMinerRunning = TRUE; // Sets miner status to active
+		SetWindowText(hWnd, L"CrunchNet Miner (Active)"); // Changes text of dashboard window
+		SetWindowText(minerToggle, L"Stop miner"); // Changes text of miner toggle button
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)UpdateTimer, timer, NULL, NULL); // Starts timer
 
-	// Miner initialization
-	GetSystemTime(&systime); // Gets current time
+		// Miner initialization
+		GetSystemTime(&systime); // Gets current time
 
-	// Opens log file
-	if (!(_wfopen_s(&fiop, L"log.txt", L"a"))) {
-		// Saves start message to log file
-		fwprintf(fiop, L"Log started at %d/%d/%d ", systime.wDay, systime.wMonth, systime.wYear);
-		WriteTime(1);
-		fwprintf(fiop, L"\n"); // Prints line break character
+		// Opens log file
+		if (!(_wfopen_s(&fiop, L"log.txt", L"a"))) {
+			// Saves start message to log file
+			fwprintf(fiop, L"Log started at %d/%d/%d ", systime.wDay, systime.wMonth, systime.wYear);
+			WriteTime(1);
+			fwprintf(fiop, L"\n"); // Prints line break character
+		}
+		else {
+			WriteError(hWnd, L"Could not open log file.", 24); // Prints error
+			ResetMiner(hWnd, minerToggle);
+			return;
+		}
+
+		WriteMessage(L"Initializing miner...", 21, 2); // Prints initialization message
+
+		// Checks for Internet connection
+		if (!(InternetGetConnectedState(NULL, NULL))) {
+			WriteError(hWnd, L"There is no Internet connection. Reconnect and try again.", 57); // Prints error
+			ResetMiner(hWnd, minerToggle); // Resets miner
+			return;
+		}
+
+		/* Notifies CrunchNet that miner has started */
+
+		WriteMessage(L"Miner initialization succeeded. Now mining", 42, 2); // Prints initialization success message
+		CreateThread(NULL, 0, MinerExecution, NULL, NULL, NULL); // Starts miner thread
 	}
-	else {
-		WriteError(hWnd, L"Could not open log file.", 24); // Prints error
-		ResetMiner(hWnd, minerToggle);
-		return;
-	}
-	
-	WriteMessage(L"Initializing miner...", 21, 2); // Prints initialization message
+	else MessageBox(hWnd, L"Miner is still running", szTitle, MB_ICONERROR | MB_APPLMODAL); // Shows error message box
+}
 
-	// Checks for Internet connection
-	if (!(InternetGetConnectedState(NULL, NULL))) {
-		WriteError(hWnd, L"There is no Internet connection. Reconnect and try again.", 57); // Prints error
-		ResetMiner(hWnd, minerToggle); // Resets miner
-		return;
-	}
+typedef struct _TERMPARAMS { HWND hWnd, minerToggle; }TERMPARAMS; // Termination function parameters struct
 
-	/* Notifies CrunchNet that miner has started */
-
-	WriteMessage(L"Miner initialization succeeded. Now mining", 42, 2); // Prints initialization success message
-	CreateThread(NULL, 0, MinerExecution, NULL, NULL, NULL); // Starts miner thread
+// Miner termination execution function (runs on seperate thread to prevent "Not Responding")
+DWORD MinerTermination(void* params) {
+	while (isMinerRunning) continue; // Waits for miner to finish
+	TERMPARAMS* tmp = params; // Casts parameter to parameter struct pointer
+	WriteMessage(L"Miner has stopped.", 22, 2); // Prints miner termination message to console and log file
+	ResetMiner(tmp->hWnd, tmp->minerToggle); // Resets miner
+	promptStatus = FALSE; // Resets termination prompt
+	return 0;
 }
 
 // Stops miner
 void StopMiner(HWND hWnd, HWND minerToggle) {
-	promptStatus = TRUE; // Sends miner loop termination prompt
-	while (isMinerRunning) break; // Waits for miner to finish
-	WriteMessage(L"Miner has stopped.", 22, 2); // Prints miner termination message to console and log file
-	ResetMiner(hWnd, minerToggle); // Resets miner
-	promptStatus = FALSE; // Resets termination prompt
+	if (!promptStatus) {
+		promptStatus = TRUE; // Sends miner loop termination prompt
+		TERMPARAMS tmp = { hWnd, minerToggle }; // Parameters structure
+		CreateThread(NULL, 0, MinerTermination, &tmp, NULL, NULL); // Creates new thread
+	}
+	else MessageBox(hWnd, L"Miner is still running", szTitle, MB_ICONERROR | MB_APPLMODAL); // Shows error message box
 }
 
 #endif

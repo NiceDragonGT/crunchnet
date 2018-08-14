@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CrunchNet Dashboard</string>
+    <string name="name_short">CrunchNet</string>
+    <string name="name_short_lc">crunchnet</string>
+</resources>
